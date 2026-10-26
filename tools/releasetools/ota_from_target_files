@@ -533,7 +533,10 @@ def WriteFullOTAPackage(input_zip, output_zip):
       info_dict=OPTIONS.info_dict)
 
   has_recovery_patch = HasRecoveryPatch(input_zip)
-  block_based = OPTIONS.block_based and has_recovery_patch
+  preserve_recovery = OPTIONS.info_dict.get("preserve_installed_recovery") == "true"
+  if preserve_recovery and OPTIONS.two_step:
+    raise common.ExternalError("two-step OTA cannot preserve installed recovery")
+  block_based = OPTIONS.block_based and (has_recovery_patch or preserve_recovery)
 
   #if not OPTIONS.omit_prereq:
   #  ts = GetBuildProp("ro.build.date.utc", OPTIONS.info_dict)

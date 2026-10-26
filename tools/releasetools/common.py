@@ -1273,6 +1273,9 @@ def MakeRecoveryPatch(input_dir, output_sink, recovery_img, boot_img,
   if info_dict is None:
     info_dict = OPTIONS.info_dict
 
+  if info_dict.get("preserve_installed_recovery") == "true":
+    return
+
   diff_program = ["imgdiff"]
   path = os.path.join(input_dir, "SYSTEM", "etc", "recovery-resource.dat")
   if os.path.exists(path):
