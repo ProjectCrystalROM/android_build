@@ -26,9 +26,12 @@ define build-dtimage-target
     $(hide) chmod a+r $@
 endef
 
+ifneq ($(BOARD_KERNEL_PREBUILT_DT),true)
 $(INSTALLED_DTIMAGE_TARGET): $(DTBTOOL) $(INSTALLED_KERNEL_TARGET)
 	$(build-dtimage-target)
 	@echo -e ${CL_CYN}"Made DT image: $@"${CL_RST}
+
+endif # source-generated DT
 
 ALL_DEFAULT_INSTALLED_MODULES += $(INSTALLED_DTIMAGE_TARGET)
 ALL_MODULES.$(LOCAL_MODULE).INSTALLED += $(INSTALLED_DTIMAGE_TARGET)
